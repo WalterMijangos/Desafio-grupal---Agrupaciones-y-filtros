@@ -17,12 +17,12 @@ JOIN sell.ventas v on c.cliente_id = v.cliente_id --Aqui hago un JOIN para unir 
 WHERE YEAR(V.fecha_venta) = YEAR(GETDATE()) - 4  --Año 2021 // Inge, la BD de Ecommerce tiene registros del año 2021. De 2022 - 2025 no hay registros 
 GROUP BY c.cliente_id, CONCAT(c.nombre,' ',c.apellido) --Los agrupo
 ORDER BY Total_De_Gastos DESC;  --Y los ordeno de mayor a menor
-GO;
+GO
 
 --Aqui verifiqué que hay registros solo del año 2021.
 SELECT fecha_venta FROM sell.ventas 
 WHERE YEAR(fecha_venta) = '2021'
-GO;
+GO
 
 /*
 🔹 Reto 2 – Categorías sin productos vendidos
@@ -36,7 +36,7 @@ FROM sell.categoria as c
 LEFT JOIN sell.productos as p ON c.categoria_id = p.categoria_id --Aqui hago un left join para mostrar las categorias aunque no tengan productos
 LEFT JOIN sell.detalle_ventas dv ON p.producto_id = dv.producto_id --aqui otro left donde si un producto no ha sido vendido, entonces no tendrá coincidencia en detalle_ventas
 WHERE dv.producto_id IS NULL; --aqui la condición de que si el producto_id es nulo significará el producto no fue vendido
-GO;
+GO
 
 /*
 🔹 Reto 3 – Días con mayor volumen de ventas
@@ -51,7 +51,7 @@ FROM sell.detalle_ventas AS dv --Aqui la seleccion de la tabla de detalles venta
 JOIN sell.ventas AS v ON dv.venta_id = v.venta_id --Aqui se hace un Join para unir las tablas de detalle ventas y la de ventas 
 GROUP BY v.fecha_venta  --Aqui agrupo la fecha venta 
 ORDER BY productos_vendidos DESC --Aqui ordeno los resutltados de la consulta de forma descendente de Mayor a Menor
-GO;
+GO
 
 /*
 🔹 Reto 4 – Productos con mejor desempeño en stock
@@ -67,7 +67,7 @@ FROM sell.productos as p
 JOIN sell.detalle_ventas as dv ON p.producto_id = dv.producto_id -- Hago un Join para unir la tabla detalle ventas con los productos
 GROUP BY p.producto_id, p.nombre_producto, p.stock --los Agrupo por producto
 HAVING SUM(dv.cantidad) > (p.stock * 0.5); -- Y aqui utilizo el Having despues de aplicar una funcion para filtrar los productos
-GO;
+GO
 
 /*
 🔹 Reto 5 – Clientes sin compras pero con carritos
@@ -83,4 +83,4 @@ LEFT JOIN sell.ventas v ON c.cliente_id = v.cliente_id --Aqui hago un left Join 
 WHERE v.venta_id IS NULL --Aqui es para que muestre solo los datos que son Nulos
 GROUP BY c.cliente_id, CONCAT(c.nombre,' ',c.apellido) --Aqui agrupo al cliente_id y la concatenacion del nombre y apellido del cliente
 Order BY c.cliente_id DESC --Aqui ordeno el cliente id de forma Descendente de Mayor a menor
-GO;
+GO
